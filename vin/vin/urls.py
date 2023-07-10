@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from vinapp.views import TastingNoteFormView
+from vinapp.views import MainPageFormView
 from vinapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tasting-note-form/', TastingNoteFormView.as_view(), name='tasting-note-form'),
+    path('main-page-form/', MainPageFormView.as_view(), name='main-page-form'),
 ]

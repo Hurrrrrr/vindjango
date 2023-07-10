@@ -2,12 +2,12 @@ from django.shortcuts import render
 from .models import Answers
 from .forms import AnswersForm
 from django.views.generic.edit import FormView
-from .forms import TastingNoteForm
+from .forms import MainPageForm
 
-class TastingNoteFormView(FormView):
-    template_name = 'vinapp/tasting_note_form.html'
-    form_class = TastingNoteForm
-    success_url = '/tasting-note'   # or whatever the url ends up being
+class MainPageFormView(FormView):
+    template_name = 'vinapp/main_page_form.html'
+    form_class = MainPageForm
+    success_url = '/tbd'   # or whatever the url ends up being
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.

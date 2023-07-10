@@ -6,7 +6,7 @@ class AnswersForm(forms.ModelForm):
         model = Answers
         fields = ['grape', 'country', 'region', 'appellation', 'vintage']
 
-class TastingNoteForm(forms.Form):
+class MainPageForm(forms.Form):
     SCOPE_CHOICES = [
         ('0', 'Narrow'),
         ('1', 'Medium'),
@@ -15,12 +15,12 @@ class TastingNoteForm(forms.Form):
     ]
 
     ACCURACY_CHOICES = [
-        ('0', 'Very Low'),
-        ('1', 'Low'),
-        ('2', 'Medium'),
-        ('3', 'High'),
-        ('4', 'Very High'),
         ('5', 'Perfect'),
+        ('4', 'Very High'),
+        ('3', 'High'),
+        ('2', 'Medium'),
+        ('1', 'Low'),
+        ('0', 'Very Low'),
     ]
 
     scope = forms.ChoiceField(choices=SCOPE_CHOICES)
