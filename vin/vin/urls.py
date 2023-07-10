@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from vinapp.views import MainPageFormView
+from vinapp.views import TastingNoteDisplayView
+from vinapp.views import ResultsView
 from vinapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main-page-form/', MainPageFormView.as_view(), name='main-page-form'),
+    path('tasting-note-display/', TastingNoteDisplayView.as_view(), name='tasting-note-display'),
+    path('results/', ResultsView.as_view(), name='results'),
 ]
