@@ -5,7 +5,7 @@ from django.views.generic.edit import FormView
 from .forms import TastingNoteForm
 
 class TastingNoteFormView(FormView):
-    template_name = '/tasting_note_form.html'
+    template_name = 'vinapp/tasting_note_form.html'
     form_class = TastingNoteForm
     success_url = '/tasting-note'   # or whatever the url ends up being
 
