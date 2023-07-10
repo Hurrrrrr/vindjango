@@ -39,3 +39,10 @@ class Wine(models.Model):
     oak_aroma = models.IntegerField()
     oak_intensity = models.IntegerField()
     aroma_other = models.CharField(max_length=255, null=True, blank=True)
+
+class Answers(models.Model):
+    grape = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    appellation = models.CharField(max_length=100)
+    vintage = models.IntegerField()
