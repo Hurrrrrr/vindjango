@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from .models import TastingNote
-from .models import Answers
-from .forms import AnswersForm
+from .models import Answers, Wine
+from .helpers import TastingNote
+from .forms import AnswersForm, MainPageForm
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView
+from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
-from django.urls import reverse_lazy
-from .forms import MainPageForm
+from django.urls import reverse_lazy 
+import random
 
 class MainPageFormView(FormView):
     template_name = 'vinapp/main_page_form.html'
@@ -14,15 +14,14 @@ class MainPageFormView(FormView):
     success_url = reverse_lazy('tasting-note-display')
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # Here you can process the data before redirecting the user.
+        scope = form.cleaned_data['scope']
+        accuracy = form.cleaned_data['accuracy']
 
-        # For example, you can store the form data in the session:
-        self.request.session['scope'] = form.cleaned_data['scope']
-        self.request.session['accuracy'] = form.cleaned_data['accuracy']
+        filtered_wines = Wine.objects.filter(scope__lte=scope)
+        selected_wine = random.choice(filtered_wines)
+        tasting_note = TastingNote(selected_wine, accuracy)
+        form.instance.tasting_note = tasting_note.generate_description()
 
-        # Then you can return the super class's form_valid method.
-        # This will redirect the user to the URL specified in success_url.
         return super().form_valid(form)
 
 class TastingNoteDisplayView(FormView):
