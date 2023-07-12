@@ -18,8 +18,11 @@ class MainPageFormView(FormView):
         accuracy = form.cleaned_data['accuracy']
 
         filtered_wines = Wine.objects.filter(scope__lte=scope)
+        print(filtered_wines)
         selected_wine = random.choice(filtered_wines)
+        print(selected_wine)
         tasting_note = TastingNote(selected_wine, accuracy)
+        print(tasting_note)
         form.instance.tasting_note = tasting_note.generate_description()
 
         return super().form_valid(form)
