@@ -9,12 +9,12 @@ from django.urls import reverse_lazy
 import random
 
 class MainPageFormView(FormView):
-    print("begin mainpageformview")
     template_name = 'vinapp/main_page_form.html'
     form_class = MainPageForm
     success_url = reverse_lazy('tasting-note-display')
 
     def form_valid(self, form):
+        print("Begin form_valid")
         scope = form.cleaned_data['scope']
         accuracy = form.cleaned_data['accuracy']
 
@@ -22,11 +22,12 @@ class MainPageFormView(FormView):
         if not filtered_wines.exists():
             print("filtered_wines doesn't exist")
         else:
+            print(filtered_wines)
             selected_wine = random.choice(filtered_wines)
-        print(selected_wine)
-        tasting_note = TastingNote(selected_wine, accuracy)
-        print(tasting_note)
-        form.instance.tasting_note = tasting_note.generate_description()
+            print(selected_wine)
+            tasting_note = TastingNote(selected_wine, accuracy)
+            print(tasting_note)
+            form.instance.tasting_note = tasting_note.generate_description()
 
         return super().form_valid(form)
 
