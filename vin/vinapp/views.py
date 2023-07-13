@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 import random
 
 class MainPageFormView(FormView):
+    print("begin mainpageformview")
     template_name = 'vinapp/main_page_form.html'
     form_class = MainPageForm
     success_url = reverse_lazy('tasting-note-display')
@@ -18,8 +19,10 @@ class MainPageFormView(FormView):
         accuracy = form.cleaned_data['accuracy']
 
         filtered_wines = Wine.objects.filter(scope__lte=scope)
-        print(filtered_wines)
-        selected_wine = random.choice(filtered_wines)
+        if not filtered_wines.exists():
+            print("filtered_wines doesn't exist")
+        else:
+            selected_wine = random.choice(filtered_wines)
         print(selected_wine)
         tasting_note = TastingNote(selected_wine, accuracy)
         print(tasting_note)

@@ -9,6 +9,7 @@ class StandardIntField(models.IntegerField):
         self.validators.append(MaxValueValidator(255))
 
 class Wine(models.Model):
+    id = models.AutoField(primary_key=True)
     scope = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(3)]
     )
