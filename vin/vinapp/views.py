@@ -11,7 +11,7 @@ import random
 class MainPageFormView(FormView):
     template_name = 'vinapp/main_page_form.html'
     form_class = MainPageForm
-    success_url = reverse_lazy('tasting-note-display')
+    success_url = reverse_lazy('vinapp:tasting-note-display')
 
     def form_valid(self, form):
         print("calling mainpage form_valid")
@@ -41,7 +41,7 @@ class MainPageFormView(FormView):
 class TastingNoteDisplayView(FormView):
     template_name = 'vinapp/tasting_note_display.html'
     form_class= AnswersForm
-    success_url = reverse_lazy('vinapp/results')
+    success_url = reverse_lazy('vinapp:results')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
