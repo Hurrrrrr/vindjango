@@ -14,39 +14,41 @@ class MainPageFormView(FormView):
     success_url = reverse_lazy('tasting-note-display')
 
     def form_valid(self, form):
-        print("Begin form_valid")
-        scope = form.cleaned_data['scope']
-        accuracy = form.cleaned_data['accuracy']
+        print("calling mainpage form_valid")
+        scope = int(form.cleaned_data['scope'])
+        accuracy = int(form.cleaned_data['accuracy'])
 
         filtered_wines = Wine.objects.filter(scope__lte=scope)
         if not filtered_wines.exists():
             print("filtered_wines doesn't exist")
         else:
-            print(filtered_wines)
             selected_wine = random.choice(filtered_wines)
-            print(selected_wine)
+            print(f"selected wine: {selected_wine}")
             tasting_note = TastingNote(selected_wine, accuracy)
-            print(tasting_note)
-            form.instance.tasting_note = tasting_note.generate_description()
+            print(f"tasting note: {tasting_note}")
+            self.request.session['tasting_note'] = tasting_note.generate_description()
 
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasting_note'] = self.request.session.get('tasting_note')
+        if 'tasting_note' in self.request.session:
+            del self.request.session['tasting_note']
+        return context
+    
+
 class TastingNoteDisplayView(FormView):
-    model = TastingNote
     template_name = 'vinapp/tasting_note_display.html'
     form_class= AnswersForm
+    success_url = reverse_lazy('vinapp/results')
 
-    def get_object(self):
-        # Here you can access the data from the form and create the TastingNote object.
-        # For now, just return an instance of TastingNote. You will need to implement the
-        # actual logic to get the data from the form and generate the TastingNote.
-        return TastingNote()
-    
-    def get_success_url(self):
-        return reverse_lazy('vinapp/results.html')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tasting_note"] = self.request.session.get('tasting_note')  # I think this needs to be results, not tasting_note
+        return context
     
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
