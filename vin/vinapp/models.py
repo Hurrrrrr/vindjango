@@ -159,9 +159,23 @@ class Wine(models.Model):
         else:
             return split_grapes[1:]
 
-class Answers(models.Model):
+class UserAnswers(models.Model):
     grape = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     appellation = models.CharField(max_length=100)
     vintage = models.IntegerField()
+
+class UserResults(models.Model):
+
+    grape = models.BooleanField()
+    country = models.BooleanField()
+    region = models.BooleanField()
+    appellation = models.BooleanField()
+    vintage = models.BooleanField()
+
+    grape_score = models.IntegerField()
+    country_score = models.IntegerField()
+    region_score = models.IntegerField()
+    appellation_score = models.IntegerField()
+    vintage_score = models.IntegerField()

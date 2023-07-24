@@ -1,9 +1,9 @@
 from django import forms
-from .models import Answers
+from .models import UserAnswers
 
-class AnswersForm(forms.ModelForm):
+class UserAnswersForm(forms.ModelForm):
     class Meta:
-        model = Answers
+        model = UserAnswers
         fields = ['grape', 'country', 'region', 'appellation', 'vintage']
 
 class MainPageForm(forms.Form):
