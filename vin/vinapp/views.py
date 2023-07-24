@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import UserAnswers, Wine
 from .helpers import TastingNote, ResultsLogic, UserResults
 from .forms import UserAnswersForm, MainPageForm
@@ -57,7 +57,15 @@ class TastingNoteDisplayView(FormView):
     
     def form_valid(self, form):
 
-        user_answers = UserAnswers.objects.create(
+        user_answers = self.create_user_answers_obj(form)
+        selected_wine = self.retrieve_selected_wine()
+        self.process_answers(user_answers, selected_wine)
+
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def create_user_answers_obj(self, form):
+
+        answers = UserAnswers.objects.create(
             grape = form.cleaned_data['grape'],
             country = form.cleaned_data['country'],
             region = form.cleaned_data['region'],
@@ -65,11 +73,20 @@ class TastingNoteDisplayView(FormView):
             vintage = form.cleaned_data['vintage']
         )
 
+        return answers
+    
+    def retrieve_selected_wine(self):
         wine_id = self.request.session.get('selected_wine_id')
-        del self.request.session['selected_wine_id']
+        if 'selected_wine_id' in self.request.session:
+            del self.request.session['selected_wine_id']
         selected_wine = Wine.objects.get(id = wine_id)
+        return selected_wine
+    
+    # creates logic instance, stores formatted results in session for use 
+    # in ResultsView, creates and saves UserResults instance
+    def process_answers(self, user_answers_obj, wine_obj):
 
-        results_logic = ResultsLogic(user_answers, selected_wine)
+        results_logic = ResultsLogic(user_answers_obj, wine_obj)
         results_logic.check_user_answers()
         results_logic.update_score()
 
@@ -93,10 +110,6 @@ class TastingNoteDisplayView(FormView):
         )
 
         user_results.save()
-        # use this later?
-        # self.request.session['user_results_id'] = user_results.id
-
-        return HttpResponseRedirect(self.get_success_url())
 
 class ResultsView(TemplateView):
     template_name = 'vinapp/results.html'
@@ -108,7 +121,6 @@ class ResultsView(TemplateView):
             del self.request.session['results_string']
         return context
     
-
 def submit_answer(request):
     if request.method == 'POST':
         form = UserAnswersForm(request.POST)
@@ -119,3 +131,7 @@ def submit_answer(request):
         form = UserAnswersForm()
 
     return render(request, 'submit_answer.html', {'form': form})
+
+def start_over(request):
+    request.session.flush()
+    return redirect('vinapp:main-page-form')

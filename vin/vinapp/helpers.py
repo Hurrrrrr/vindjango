@@ -130,8 +130,10 @@ class TastingNote:
             return "Sparkling"
         elif self.petillance >= 39:
             return "Semi-Sparkling"
-        elif self.petillance >= 20:
+        elif self.petillance >= 29:
             return "Spritzy"
+        elif self.petillance >= 20:
+            return "Slightly Spritzy"
         elif self.petillance < 20:
             return "Still"
         else:
