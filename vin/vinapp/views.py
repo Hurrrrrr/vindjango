@@ -15,7 +15,17 @@ class MainPageFormView(FormView):
     success_url = reverse_lazy('vinapp:tasting-note-display')
 
     def form_valid(self, form):
-        print("calling mainpage form_valid")
+        self.select_random_wine(form)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasting_note'] = self.request.session.get('tasting_note')
+        if 'tasting_note' in self.request.session:
+            del self.request.session['tasting_note']
+        return context
+        
+    def select_random_wine(self, form):
         scope = int(form.cleaned_data['scope'])
         accuracy = int(form.cleaned_data['accuracy'])
 
@@ -28,16 +38,6 @@ class MainPageFormView(FormView):
             tasting_note = TastingNote(selected_wine, accuracy)
             self.request.session['tasting_note'] = tasting_note.generate_description()
 
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tasting_note'] = self.request.session.get('tasting_note')
-        if 'tasting_note' in self.request.session:
-            del self.request.session['tasting_note']
-        return context
-    
-
 class TastingNoteDisplayView(FormView):
     template_name = 'vinapp/tasting_note_display.html'
     form_class= UserAnswersForm
@@ -45,7 +45,7 @@ class TastingNoteDisplayView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tasting_note"] = self.request.session.get('tasting_note')  # I think this needs to be results, not tasting_note
+        context["tasting_note"] = self.request.session.get('tasting_note')
         return context
     
     def post(self, request, *args, **kwargs):
@@ -66,6 +66,7 @@ class TastingNoteDisplayView(FormView):
         )
 
         wine_id = self.request.session.get('selected_wine_id')
+        del self.request.session['selected_wine_id']
         selected_wine = Wine.objects.get(id = wine_id)
 
         results_logic = ResultsLogic(user_answers, selected_wine)
@@ -92,7 +93,8 @@ class TastingNoteDisplayView(FormView):
         )
 
         user_results.save()
-        self.request.session['user_results_id'] = user_results.id
+        # use this later?
+        # self.request.session['user_results_id'] = user_results.id
 
         return HttpResponseRedirect(self.get_success_url())
 

@@ -423,22 +423,40 @@ class TastingNote:
             return "Error outputting get_earth_organic"
 
     def get_earth_inorganic(self):
-        if self.earth_inorganic >= 230:
-            return "Scraped Steel"
-        elif self.earth_inorganic >= 202:
-            return "Flinty"
-        elif self.earth_inorganic >= 174:
-            return "Chalky"
-        elif self.earth_inorganic >= 146:
-            return "Slatey"
-        elif self.earth_inorganic >= 118:
-            return "Wet Pavement"
-        elif self.earth_inorganic >= 90:
-            return "Wet Stone"
-        elif self.earth_inorganic < 90:
-            return "None"
+        if self.label_color == "White":
+            if self.earth_inorganic >= 230:
+                return "Scraped Steel"
+            elif self.earth_inorganic >= 202:
+                return "Flinty"
+            elif self.earth_inorganic >= 174:
+                return "Chalky"
+            elif self.earth_inorganic >= 146:
+                return "Slatey"
+            elif self.earth_inorganic >= 118:
+                return "Wet Pavement"
+            elif self.earth_inorganic >= 90:
+                return "Wet Stone"
+            elif self.earth_inorganic < 90:
+                return "None"
+            else:
+                return "Error outputting get_earth_inorganic"
+        elif self.label_color == "Red":
+            if self.earth_inorganic >= 222:
+                return "Clay"
+            elif self.earth_inorganic >= 189:
+                return "Gravelly"
+            elif self.earth_inorganic >= 156:
+                return "Concrete"
+            elif self.earth_inorganic >= 123:
+                return "Wet Pavement"
+            elif self.earth_inorganic >= 90:
+                return "Wet Stone"
+            elif self.earth_inorganic < 90:
+                return "None"
+            else:
+                return "Error outputting get_earth_inorganic"
         else:
-            return "Error outputting get_earth_inorganic"
+            return "earth_inorganic error (only white/red currently implemented)"
 
     def get_herbal(self):
         if self.herbal >= 210:
