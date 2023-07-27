@@ -2,6 +2,14 @@ from django import forms
 from .models import UserAnswers
 
 class UserAnswersForm(forms.ModelForm):
+
+    GRAPE_CHOICES = ("Chardonnay", "Chenin Blanc", "Gewurtraminer",
+    "Pinot Gris/Grigio", "Riesling", "Sauvignon Blanc", "Cabernet Sauvignon",
+    "Merlot,", "Pinot Noir", "Syrah/Shiraz", "Grenache-based blend",
+    "Cabernet Sauvignon-based blend", "Merlot-based blend", "Nebbiolo",
+    "Corvina-based blend", "Sangiovese", "Tempranillo", "Malbec",
+    "Gamay", "Cabernet Franc")
+
     class Meta:
         model = UserAnswers
         fields = ['grape', 'country', 'region', 'appellation', 'vintage']
