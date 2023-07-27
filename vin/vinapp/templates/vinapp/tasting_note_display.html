@@ -23,11 +23,18 @@
     <a href="{% url 'vinapp:start-over' %}">Start Over</a>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <!-- Custom JavaScript code here -->
-    <!-- <script>
+    
+    <script>
         $(document).ready(function(){
-            /* Your JavaScript code here */
+            $( function() {
+                $( ".autocomplete" ).each(function() {
+                    var availableChoices = JSON.parse($(this).attr('data-choices'));
+                    $(this).autocomplete({
+                        source: availableChoices
+                    });
+                });
+            });
         });
-    </script> -->
+    </script>
 </body>
 </html>
