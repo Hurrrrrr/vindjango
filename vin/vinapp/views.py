@@ -18,6 +18,9 @@ class MainPageFormView(FormView):
     def form_valid(self, form):
         selected_wine = self.select_random_wine(form)
         self.request.session['chart_data'] = json.dumps(self.prepare_chart_data(selected_wine))
+        print(json.dumps(self.prepare_chart_data(selected_wine)))
+        self.request.session['color_data'] = json.dumps(self.prepare_color_data(selected_wine))
+        print(self.prepare_color_data(selected_wine))
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -25,8 +28,8 @@ class MainPageFormView(FormView):
         context = super().get_context_data(**kwargs)
         context['tasting_note'] = self.request.session.get('tasting_note')
         context['chart_data'] = self.request.session.get('chart_data')
-        if 'tasting_note' in self.request.session:
-            del self.request.session['tasting_note']
+        # if 'tasting_note' in self.request.session:
+        #     del self.request.session['tasting_note']
         # if 'chart_data' in self.request.session:
         #     del self.request.session['chart_data']
         return context
@@ -60,6 +63,16 @@ class MainPageFormView(FormView):
         }
 
         return chart_data
+    
+    def prepare_color_data(self, wine_obj):
+
+        color_data = {
+            'appearance_red': wine_obj.appearance_red,
+            'appearance_green': wine_obj.appearance_green,
+            'appearance_blue': wine_obj.appearance_blue
+        }
+
+        return color_data
 
 class TastingNoteDisplayView(FormView):
     template_name = 'vinapp/tasting_note_display.html'
@@ -70,6 +83,13 @@ class TastingNoteDisplayView(FormView):
         context = super().get_context_data(**kwargs)
         context["tasting_note"] = self.request.session.get('tasting_note')
         context['chart_data'] = self.request.session.get('chart_data')
+        # context['color_data'] = self.request.session.get('color_data')
+        # if 'tasting_note' in self.request.session:
+        #     del self.request.session['tasting_note']
+        # if 'chart_data' in self.request.session:
+        #     del self.request.session['chart_data']
+        # if 'color_data' in self.request.session:
+        #     del self.request.session['color_data']
         return context
     
     def post(self, request, *args, **kwargs):

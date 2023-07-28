@@ -11,7 +11,7 @@
 </head>
 <body>
     <h1>Tasting Note</h1>
-    <div id="chart"></div>
+    <div id="swatch" style="background-color: rgb({{color_data.appearance_red|stringformat:"s"|safe}}, {{color_data.appearance_green|stringformat:"s"|safe}}, {{color_data.appearance_blue|stringformat:"s"|safe}})"></div>    <div id="chart"></div>
     <p>{{ tasting_note }}</p>
 
     <h1>Your Guess</h1>
@@ -40,13 +40,11 @@
         });
 
         let chart_data = '{{ chart_data|escapejs }}';
+        console.log(chart_data)
         if (chart_data) {
             chart_data = JSON.parse(chart_data);
-        } else {
-            console.log("chart_data does not exist");
-        }
 
-        let svg = d3.select("#chart")
+            let svg = d3.select("#chart")
             .append("svg")
             .attr("width", 500)
             .attr("height", 300);
@@ -74,6 +72,11 @@
 
         svg.append("g")
             .call(d3.axisLeft(y));
+        } else {
+            console.log("chart_data does not exist");
+        }
+
+
     </script>
     
 </body>
