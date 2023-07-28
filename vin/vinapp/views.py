@@ -8,7 +8,7 @@ from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-import random
+import random, json
 
 class MainPageFormView(FormView):
     template_name = 'vinapp/main_page_form.html'
@@ -16,18 +16,19 @@ class MainPageFormView(FormView):
     success_url = reverse_lazy('vinapp:tasting-note-display')
 
     def form_valid(self, form):
-
-        self.select_random_wine(form)
-
-        self.prepare_chart()
-
+        selected_wine = self.select_random_wine(form)
+        self.request.session['chart_data'] = json.dumps(self.prepare_chart_data(selected_wine))
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         context['tasting_note'] = self.request.session.get('tasting_note')
+        context['chart_data'] = self.request.session.get('chart_data')
         if 'tasting_note' in self.request.session:
             del self.request.session['tasting_note']
+        # if 'chart_data' in self.request.session:
+        #     del self.request.session['chart_data']
         return context
         
     def select_random_wine(self, form):
@@ -41,13 +42,24 @@ class MainPageFormView(FormView):
             selected_wine = random.choice(filtered_wines)
             self.request.session['selected_wine_id'] = selected_wine.id
             self.create_tasting_note(selected_wine, accuracy)
+            return selected_wine
             
     def create_tasting_note(self, wine_obj, accuracy):
         tasting_note = TastingNote(wine_obj, accuracy)
         self.request.session['tasting_note'] = tasting_note.generate_description()
     
-    def prepare_chart(self):
-        continue
+    def prepare_chart_data(self, wine_obj):
+
+        chart_data = {
+            'sweetness': wine_obj.sweetness,
+            'acidity': wine_obj.acidity,
+            'alcohol': wine_obj.alcohol,
+            'body': wine_obj.body,
+            'tannin_or_bitterness': wine_obj.tannin_or_bitterness,
+            'finish': wine_obj.finish
+        }
+
+        return chart_data
 
 class TastingNoteDisplayView(FormView):
     template_name = 'vinapp/tasting_note_display.html'
@@ -57,6 +69,7 @@ class TastingNoteDisplayView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tasting_note"] = self.request.session.get('tasting_note')
+        context['chart_data'] = self.request.session.get('chart_data')
         return context
     
     def post(self, request, *args, **kwargs):
