@@ -9,8 +9,8 @@ class UserAnswersForm(forms.ModelForm):
     "Pinot Gris/Grigio", "Riesling", "Sauvignon Blanc", "Cabernet Sauvignon",
     "Merlot,", "Pinot Noir", "Syrah/Shiraz", "Grenache-based blend",
     "Cabernet Sauvignon-based blend", "Merlot-based blend", "Nebbiolo",
-    "Corvina-based blend", "Sangiovese", "Tempranillo", "Malbec",
-    "Gamay", "Cabernet Franc")
+    "Corvina-based blend", "Sangiovese", "Tempranillo-based Blend", "Malbec",
+    "Gamay", "Cabernet Franc", "Viognier", "Mourverde")
 
     COUNTRY_CHOICES = ("France", "Italy", "USA", "Germany",
     "Spain", "Argentina", "Australia", "New Zealand")
