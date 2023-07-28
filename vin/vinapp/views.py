@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
 from .models import UserAnswers, Wine
 from .helpers import TastingNote, ResultsLogic, UserResults
 from .forms import UserAnswersForm, MainPageForm
+from django.core.serializers import serialize
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
@@ -15,7 +16,11 @@ class MainPageFormView(FormView):
     success_url = reverse_lazy('vinapp:tasting-note-display')
 
     def form_valid(self, form):
+
         self.select_random_wine(form)
+
+        self.prepare_chart()
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -35,12 +40,18 @@ class MainPageFormView(FormView):
         else:
             selected_wine = random.choice(filtered_wines)
             self.request.session['selected_wine_id'] = selected_wine.id
-            tasting_note = TastingNote(selected_wine, accuracy)
-            self.request.session['tasting_note'] = tasting_note.generate_description()
+            self.create_tasting_note(selected_wine, accuracy)
+            
+    def create_tasting_note(self, wine_obj, accuracy):
+        tasting_note = TastingNote(wine_obj, accuracy)
+        self.request.session['tasting_note'] = tasting_note.generate_description()
+    
+    def prepare_chart(self):
+        continue
 
 class TastingNoteDisplayView(FormView):
     template_name = 'vinapp/tasting_note_display.html'
-    form_class= UserAnswersForm
+    form_class = UserAnswersForm
     success_url = reverse_lazy('vinapp:results')
 
     def get_context_data(self, **kwargs):
