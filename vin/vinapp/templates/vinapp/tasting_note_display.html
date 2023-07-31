@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasting Note Display</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/swatch.css' %}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <h1>Tasting Note</h1>
-    <div id="swatch" style="background-color: rgb({{color_data.appearance_red|stringformat:"s"|safe}}, {{color_data.appearance_green|stringformat:"s"|safe}}, {{color_data.appearance_blue|stringformat:"s"|safe}})"></div>    <div id="chart"></div>
+    <div id="swatch" style="background-color: rgb({{color_data.appearance_red}}, {{color_data.appearance_green}}, {{color_data.appearance_blue}});"></div>
+    <div id="chart"></div>
     <p>{{ tasting_note }}</p>
 
     <h1>Your Guess</h1>
@@ -40,7 +42,6 @@
         });
 
         let chart_data = '{{ chart_data|escapejs }}';
-        console.log(chart_data)
         if (chart_data) {
             chart_data = JSON.parse(chart_data);
 

@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 import random, json
 
+# TODO: Fix color swatch issues
+
 class MainPageFormView(FormView):
     template_name = 'vinapp/main_page_form.html'
     form_class = MainPageForm
@@ -18,20 +20,15 @@ class MainPageFormView(FormView):
     def form_valid(self, form):
         selected_wine = self.select_random_wine(form)
         self.request.session['chart_data'] = json.dumps(self.prepare_chart_data(selected_wine))
-        print(json.dumps(self.prepare_chart_data(selected_wine)))
         self.request.session['color_data'] = json.dumps(self.prepare_color_data(selected_wine))
-        print(self.prepare_color_data(selected_wine))
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
         context['tasting_note'] = self.request.session.get('tasting_note')
-        context['chart_data'] = self.request.session.get('chart_data')
-        # if 'tasting_note' in self.request.session:
-        #     del self.request.session['tasting_note']
-        # if 'chart_data' in self.request.session:
-        #     del self.request.session['chart_data']
+        if 'tasting_note' in self.request.session:
+            del self.request.session['tasting_note']
         return context
         
     def select_random_wine(self, form):
@@ -83,7 +80,7 @@ class TastingNoteDisplayView(FormView):
         context = super().get_context_data(**kwargs)
         context["tasting_note"] = self.request.session.get('tasting_note')
         context['chart_data'] = self.request.session.get('chart_data')
-        # context['color_data'] = self.request.session.get('color_data')
+        context['color_data'] = json.loads(self.request.session.get('color_data', '{}'))
         # if 'tasting_note' in self.request.session:
         #     del self.request.session['tasting_note']
         # if 'chart_data' in self.request.session:
