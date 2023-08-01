@@ -9,7 +9,7 @@ class UserAnswersForm(forms.ModelForm):
     "Pinot Gris/Grigio", "Riesling", "Sauvignon Blanc", "Cabernet Sauvignon",
     "Merlot,", "Pinot Noir", "Syrah/Shiraz", "Grenache-based blend",
     "Cabernet Sauvignon-based blend", "Merlot-based blend", "Nebbiolo",
-    "Corvina-based blend", "Sangiovese", "Tempranillo-based Blend", "Malbec",
+    "Corvina-based blend", "Sangiovese", "Tempranillo", "Malbec",
     "Gamay", "Cabernet Franc", "Viognier", "Mourverde")
 
     COUNTRY_CHOICES = ("France", "Italy", "USA", "Germany",
@@ -22,10 +22,10 @@ class UserAnswersForm(forms.ModelForm):
     APPELLATION_CHOICES = ("Chablis 1er Cru", "Chassagne-Montratcher 1er Cru",
     "Napa Valley", "Vouvray", "Alsace Grand Cru", "Pinot Grigio Delle Venezie",
     "Mosel", "Sancerre", "Marlborough", "St-Julien", "Saint-Emilion",
-    "Borgogne 1er Cru", "Cote-Rotie", "Chateauneuf-Du-Pape", "Barolo",
+    "Bourgogne 1er Cru", "Cote-Rotie", "Chateauneuf-Du-Pape", "Barolo",
     "Amarone Della Valpolicella", "Brunello Di Montalcino Riserva",
     "Rioja Gran Reserva", "Russian River Valley", "Mendoza", "Barossa Valley",
-    "Central Otago", "Borgogne")
+    "Central Otago", "Bourgogne", "Chianti Classico Riserva")
 
     class Meta:
         model = UserAnswers

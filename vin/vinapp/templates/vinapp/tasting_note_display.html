@@ -42,6 +42,14 @@
         });
 
         let chart_data = '{{ chart_data|escapejs }}';
+        console.log(chart_data)
+        let color_data = {{ color_data|safe }};
+        console.log(color_data)
+        let chartColor = "rgb(" + color_data.appearance_red +
+                            "," + color_data.appearance_green +
+                            "," + color_data.appearance_blue + ")";
+        console.log(chartColor)
+
         if (chart_data) {
             chart_data = JSON.parse(chart_data);
 
@@ -65,7 +73,8 @@
             .attr("x", function(d) { return x(d[0]); })
             .attr("width", x.bandwidth())
             .attr("y", function(d) { return y(d[1]); })
-            .attr("height", function(d) { return 300 - y(d[1]); });
+            .attr("height", function(d) { return 300 - y(d[1]); })
+            .attr("fill", chartColor);
 
         svg.append("g")
             .attr("transform", "translate(0," + 300 + ")")
@@ -76,8 +85,6 @@
         } else {
             console.log("chart_data does not exist");
         }
-
-
     </script>
     
 </body>

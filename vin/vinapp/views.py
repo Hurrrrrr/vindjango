@@ -10,8 +10,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 import random, json
 
-# TODO: Fix color swatch issues
-
 class MainPageFormView(FormView):
     template_name = 'vinapp/main_page_form.html'
     form_class = MainPageForm
@@ -69,6 +67,7 @@ class MainPageFormView(FormView):
             'appearance_blue': wine_obj.appearance_blue
         }
 
+        print(color_data)
         return color_data
 
 class TastingNoteDisplayView(FormView):
