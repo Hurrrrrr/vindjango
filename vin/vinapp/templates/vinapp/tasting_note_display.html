@@ -12,7 +12,10 @@
 </head>
 <body>
     <h1>Tasting Note</h1>
-    <div id="swatch" style="background-color: rgb({{color_data.appearance_red}}, {{color_data.appearance_green}}, {{color_data.appearance_blue}});"></div>
+    <div id="swatch" style="background-color:
+        rgb({{color_data.appearance_red}}, 
+        {{color_data.appearance_green}},
+        {{color_data.appearance_blue}});"></div>
     <div id="chart"></div>
     <p>{{ tasting_note }}</p>
 
@@ -42,13 +45,11 @@
         });
 
         let chart_data = '{{ chart_data|escapejs }}';
-        console.log(chart_data)
         let color_data = {{ color_data|safe }};
-        console.log(color_data)
         let chartColor = "rgb(" + color_data.appearance_red +
                             "," + color_data.appearance_green +
                             "," + color_data.appearance_blue + ")";
-        console.log(chartColor)
+        const labels = ["Sweetness", "Acidity", "Alcohol", "Body", "Tannin or Bitterness", "Finish"];
 
         if (chart_data) {
             chart_data = JSON.parse(chart_data);
@@ -60,7 +61,8 @@
 
         const x = d3.scaleBand()
           .domain(Object.keys(chart_data))
-          .range([0, 500]);
+          .range([0, 500])
+          .padding(0.1);
 
         const y = d3.scaleLinear()
           .domain([0, d3.max(Object.values(chart_data))])
@@ -74,7 +76,9 @@
             .attr("width", x.bandwidth())
             .attr("y", function(d) { return y(d[1]); })
             .attr("height", function(d) { return 300 - y(d[1]); })
-            .attr("fill", chartColor);
+            .attr("fill", chartColor)
+            .attr("stroke", "black")
+            .attr("stroke-width", 1);
 
         svg.append("g")
             .attr("transform", "translate(0," + 300 + ")")
