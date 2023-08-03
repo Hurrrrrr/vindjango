@@ -1,20 +1,22 @@
 "use strict";
-console.log("updated again")
 
-const chart_data = document.body.dataset.chartData;
+let chart_data = document.body.dataset.chartData;
 let colorDataString = document.body.dataset.colorData;
 // turn the JSON string into JS object
 colorDataString = he.decode(colorDataString);
+colorDataString = colorDataString.replace(/'/g, '"');
 const color_data = JSON.parse(colorDataString);
 const chartColor = "rgb(" + color_data.appearance_red +
                         "," + color_data.appearance_green +
                         "," + color_data.appearance_blue + ")";
-console.log(chartColor)
 
 window.drawChart = function() {
 
     if (chart_data) {
-        chart_data = JSON.parse(chart_data);
+
+        let chartDataString = JSON.parse('"' + chart_data + '"');
+        chart_data = JSON.parse(chartDataString);
+        console.log(chart_data);
 
         let svg = d3.select("#chart")
         .append("svg")
