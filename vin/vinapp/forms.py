@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import TextInput
 from .models import UserAnswers
 import json
 
@@ -33,14 +34,29 @@ class UserAnswersForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['grape'].widget.attrs.update({'class': 'autocomplete',
-        'data-choices': json.dumps(self.GRAPE_CHOICES)})
-        self.fields['country'].widget.attrs.update({'class': 'autocomplete',
-        'data-choices': json.dumps(self.COUNTRY_CHOICES)})
-        self.fields['region'].widget.attrs.update({'class': 'autocomplete',
-        'data-choices': json.dumps(self.REGION_CHOICES)})
-        self.fields['appellation'].widget.attrs.update({'class': 'autocomplete',
-        'data-choices': json.dumps(self.APPELLATION_CHOICES)})
+        self.fields['grape'].widget.attrs.update({
+            'class': 'autocomplete',
+            'data-choices': json.dumps(self.GRAPE_CHOICES),
+            'placeholder': "Grape: (ie. Chardonnay)"
+            })
+        self.fields['country'].widget.attrs.update({
+            'class': 'autocomplete',
+            'data-choices': json.dumps(self.COUNTRY_CHOICES),
+            'placeholder': "Country: (ie. France)"
+            })
+        self.fields['region'].widget.attrs.update({
+            'class': 'autocomplete',
+            'data-choices': json.dumps(self.REGION_CHOICES),
+            'placeholder': "Region: (ie. Burgundy)"
+            })
+        self.fields['appellation'].widget.attrs.update({
+            'class': 'autocomplete',
+            'data-choices': json.dumps(self.APPELLATION_CHOICES),
+            'placeholder': "Appellation (ie. Macon)"
+            })
+        self.fields['vintage'].widget.attrs.update({
+            'placeholder': "Vintage (ie. 2020)"
+            })
 
 class MainPageForm(forms.Form):
     SCOPE_CHOICES = [
@@ -68,6 +84,7 @@ class MainPageForm(forms.Form):
     accuracy = forms.ChoiceField(
         choices=ACCURACY_CHOICES,
         widget=forms.Select(attrs={'title':
-        f"Lowering accuracy allows you to simulate human imperfection by "
-        f"generating a tasting note with a higher likelihood of containing "
-        f"errors."}))
+        f"Lowering accuracy allows you to simulate human imperfection. "
+        f"The lower the accuracy, the more likely a tasting note will "
+        f"contain errors, and these errors are more likely to be greater in "
+        f"magnitude."}))
