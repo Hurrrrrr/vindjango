@@ -16,7 +16,6 @@ window.drawChart = function() {
 
         let chartDataString = JSON.parse('"' + chart_data + '"');
         chart_data = JSON.parse(chartDataString);
-        console.log(chart_data);
 
         let svg = d3.select("#chart")
         .append("svg")

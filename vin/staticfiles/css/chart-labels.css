@@ -1,0 +1,5 @@
+#chart-labels {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+}

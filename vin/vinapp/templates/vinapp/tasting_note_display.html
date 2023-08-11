@@ -8,6 +8,7 @@
     <title>Tasting Note Display</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/swatch.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chart-labels.css' %}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src=" https://cdn.jsdelivr.net/npm/he@1.2.0/he.min.js "></script>
 </head>
@@ -18,6 +19,14 @@
         {{color_data.appearance_green}},
         {{color_data.appearance_blue}});"></div>
     <div id="chart"></div>
+    <div id="chart-labels">
+        <p>Sweetness</p>
+        <p>Acidity</p>
+        <p>Body</p>
+        <p>Alcohol</p>
+        <p>Tannin/Bitterness</p>
+        <p>Finish</p>
+    </div>
     <p>{{ tasting_note }}</p>
 
     <h1>Your Guess</h1>
