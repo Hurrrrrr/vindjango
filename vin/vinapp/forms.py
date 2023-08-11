@@ -59,5 +59,15 @@ class MainPageForm(forms.Form):
         (0, 'Very Low'),
     ]
 
-    scope = forms.ChoiceField(choices=SCOPE_CHOICES)
-    accuracy = forms.ChoiceField(choices=ACCURACY_CHOICES)
+    scope = forms.ChoiceField(
+        choices=SCOPE_CHOICES,
+        widget=forms.Select(attrs={'title':
+        f"A narrow scope means only the most world's most well-known styles "
+        f"of wines can appear. A wide scope means anything can appear, "
+        f"including rare and obscure wines."}))
+    accuracy = forms.ChoiceField(
+        choices=ACCURACY_CHOICES,
+        widget=forms.Select(attrs={'title':
+        f"Lowering accuracy allows you to simulate human imperfection by "
+        f"generating a tasting note with a higher likelihood of containing "
+        f"errors."}))
