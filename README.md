@@ -21,3 +21,5 @@ New-to-me technologies/skills which I learned for this project:
     Django
     prompt engineering
     data visualization with D3
+
+Note: On a Raspberry Pi, numpy requires libatlas-base-dev
