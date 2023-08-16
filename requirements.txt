@@ -1,0 +1,8 @@
+asgiref==3.7.2
+Django==4.2.3
+Levenshtein==0.21.1
+numpy==1.25.2
+python-dotenv==1.0.0
+rapidfuzz==3.2.0
+sqlparse==0.4.4
+typing_extensions==4.7.1
