@@ -14,10 +14,10 @@
 </head>
 <body data-chart-data="{{ chart_data|escapejs|safe }}" data-color-data="{{ color_data|safe }}">
     <h1>Tasting Note</h1>
-    <div id="swatch" style="background-color:
+    {% comment %} <div id="swatch" style="background-color:
         rgb({{color_data.appearance_red}}, 
         {{color_data.appearance_green}},
-        {{color_data.appearance_blue}});"></div>
+        {{color_data.appearance_blue}});"></div> {% endcomment %}
     <div id="chart"></div>
     <div id="chart-labels">
         <p>Sweetness</p>
