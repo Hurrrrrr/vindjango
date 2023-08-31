@@ -175,3 +175,6 @@ def submit_answer(request):
 def start_over(request):
     request.session.flush()
     return redirect('vinapp:main-page-form')
+
+def index(request):
+    return render(request, 'index.html')
