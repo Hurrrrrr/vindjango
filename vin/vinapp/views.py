@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 import random, json
 
 class MainPageFormView(FormView):
-    template_name = 'vinapp/main_page_form.html'
+    template_name = 'main_page_form.html'
     form_class = MainPageForm
     success_url = reverse_lazy('vinapp:tasting-note-display')
 
@@ -71,7 +71,7 @@ class MainPageFormView(FormView):
         return color_data
 
 class TastingNoteDisplayView(FormView):
-    template_name = 'vinapp/tasting_note_display.html'
+    template_name = 'tasting_note_display.html'
     form_class = UserAnswersForm
     success_url = reverse_lazy('vinapp:results')
 
@@ -152,7 +152,7 @@ class TastingNoteDisplayView(FormView):
         user_results.save()
 
 class ResultsView(TemplateView):
-    template_name = 'vinapp/results.html'
+    template_name = 'results.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
