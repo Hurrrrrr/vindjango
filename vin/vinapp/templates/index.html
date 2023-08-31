@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Improve your wine knowledge with Vindicate" />
+        <meta name="description" content="Improve your wine knowledge and practice blind tasting with Vindicate" />
         <meta name="author" content="" />
         <title>Welcome to Vindicate</title>
         <!-- Favicon-->
@@ -22,6 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'vinapp:index' %}">Home</a></li>
+                        {% comment %} TODO: Fix this link {% endcomment %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'vinapp:how_to_play' %}">How to Play</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'vinapp:info' %}">Info</a></li>
                     </ul>
