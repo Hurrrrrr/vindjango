@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 
-<head>
-    <title>{% block title %}Welcome to Vindicate{% endblock %}</title>
-</head>
-<body>
-    {% block content %}
-        <div class="text-center mt-5">
-            <h1>Welcome to Vindicate</h1>
-            <p class="lead">Improve your wine knowledge by identifying unknown wines based on tasting notes.</p>
-            <a href="{% url 'vinapp:main-page-form' %}" class="btn btn-primary">Start Now</a>
-        </div>
-    {% endblock %}
-</body>
+
+{% block title %}Welcome to Vindicate{% endblock %}
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h1>Welcome to Vindicate</h1>
+        <p class="lead">Improve your wine knowledge by identifying unknown wines based on tasting notes.</p>
+        <a href="{% url 'vinapp:main-page-form' %}" class="btn btn-primary">Start Now</a>
+    </div>
+{% endblock %}

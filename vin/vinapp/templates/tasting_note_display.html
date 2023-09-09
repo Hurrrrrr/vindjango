@@ -1,54 +1,51 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasting Note Display</title>
+{% block title %}Tasting Note Display{% endblock %}
+
+{% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/swatch.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/chart-labels.css' %}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src=" https://cdn.jsdelivr.net/npm/he@1.2.0/he.min.js "></script>
-</head>
-<body data-chart-data="{{ chart_data|escapejs|safe }}" data-color-data="{{ color_data|safe }}">
-    <h1>Tasting Note</h1>
-    {% comment %} <div id="swatch" style="background-color:
-        rgb({{color_data.appearance_red}}, 
-        {{color_data.appearance_green}},
-        {{color_data.appearance_blue}});"></div> {% endcomment %}
-    <div id="chart"></div>
-    <div id="chart-labels">
-        <p>Sweetness</p>
-        <p>Acidity</p>
-        <p>Body</p>
-        <p>Alcohol</p>
-        <p>Tannin/Bitterness</p>
-        <p>Finish</p>
-    </div>
-    <p>{{ tasting_note }}</p>
 
-    <h1>Your Guess</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            {{ field }}
-        {% endfor %}
-        <button type="submit">Submit</button>
-    </form>
-    <a href="{% url 'vinapp:start-over' %}">Start Over</a>
+    <body data-chart-data="{{ chart_data|escapejs|safe }}" data-color-data="{{ color_data|safe }}">
+        <h1>Tasting Note</h1>
+        {% comment %} <div id="swatch" style="background-color:
+            rgb({{color_data.appearance_red}}, 
+            {{color_data.appearance_green}},
+            {{color_data.appearance_blue}});"></div> {% endcomment %}
+        <div id="chart"></div>
+        <div id="chart-labels">
+            <p>Sweetness</p>
+            <p>Acidity</p>
+            <p>Body</p>
+            <p>Alcohol</p>
+            <p>Tannin/Bitterness</p>
+            <p>Finish</p>
+        </div>
+        <p>{{ tasting_note }}</p>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'js/helpers.js' %}"></script>
+        <h1>Your Guess</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+        <a href="{% url 'vinapp:start-over' %}">Start Over</a>
 
-    <script>
-    
-        window.autocomplete()
-        window.drawChart()
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'js/helpers.js' %}"></script>
 
-    </script>
-    
-</body>
-</html>
+        <script>
+        
+            window.autocomplete()
+            window.drawChart()
+
+        </script>
+    </body>
+{% endblock %}

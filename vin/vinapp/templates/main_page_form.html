@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Main Page Form{% endblock %}
 
 {% block content %}
-    <h1>Main Page Form</h1>
+    <h1>Select Options</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
