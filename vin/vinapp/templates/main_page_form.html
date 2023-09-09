@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Main Page Form{% endblock %}
 
@@ -7,7 +8,12 @@
     <h1>Select Options</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.if_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+            </div>
+        {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
