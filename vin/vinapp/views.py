@@ -59,11 +59,18 @@ class MainPageFormView(FormView):
 
         return chart_data
     
-    # convert wine.alchol (which is abv * 10) into value/255 for bar chart
+    # convert wine.alchol (which is abv * 10) into value to be used in chart:
+    # 15+ = high, 14.0 = med+, 13 = med, 12.0 = med-, 11 = low
+    # values are approximate
     def scale_alcohol(self, wine_obj):
-        # the lowest possible value of wine.alcohol that will top out the chart
-        MAX_ALC = 154
-        chart_alcohol = wine_obj.alcohol * (255 / MAX_ALC)
+        abv = wine_obj.alcohol / 10
+        TARGET_ALC = 15
+        TARGET_VALUE = 225
+        MIN_ALC = 11    # the highest value which will bottom out the chart
+        
+        #TODO Fix this
+        chart_alcohol =  ((TARGET_VALUE / (abv - MIN_ALC)) * (abv - MIN_ALC))
+
         return chart_alcohol
     
     def prepare_color_data(self, wine_obj):
