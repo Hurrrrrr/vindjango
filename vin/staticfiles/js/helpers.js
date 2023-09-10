@@ -3,6 +3,7 @@
 let chart_data = document.body.dataset.chartData;
 let colorDataString = document.body.dataset.colorData;
 // turn the JSON string into JS object
+// this is stupid but it won't work without it
 colorDataString = he.decode(colorDataString);
 colorDataString = colorDataString.replace(/'/g, '"');
 const color_data = JSON.parse(colorDataString);
@@ -47,8 +48,14 @@ window.drawChart = function() {
             .attr("transform", "translate(0," + 300 + ")")
             .call(d3.axisBottom(x));
 
+        const tickValues = [50, 100, 150, 200, 250];
+        const tickLabels = ['Low', 'Med-Low', 'Med', 'Med-High', 'High'];
+
         svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(y)
+                .tickValues(tickValues)
+                .tickFormat(function(d, i) { return tickLabels[i]; })    
+            );
         } else {
             console.log("chart_data does not exist");
         }
