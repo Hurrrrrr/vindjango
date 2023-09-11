@@ -20,42 +20,44 @@ window.drawChart = function() {
 
         let svg = d3.select("#chart")
             .append("svg")
-            .attr("width", 500)
-            .attr("height", 300);
+            .attr("width", 1200)
+            .attr("height", 600);
 
         const x = d3.scaleBand()
             .domain(Object.keys(chart_data))
-            .range([0, 500])
+            .range([0, 1100])
             .padding(0.1);
 
         const y = d3.scaleLinear()
             .domain([0, 255])
-            .range([300, 0]);
+            .range([600, 0]);
         
         const tickValues = [25, 75, 125, 175, 225];
         const tickLabels = ['Low', 'Med-Low', 'Med', 'Med-High', 'High'];
 
         let yAxisGroup= svg.append("g")
-            .attr("transform", "translate(50,0)");
+            .attr("transform", "translate(100,0)");
         
         yAxisGroup.call(d3.axisLeft(y)
             .tickValues(tickValues)
             .tickFormat(function(d, i) { return tickLabels[i]; }))
+            .selectAll("text")
+            .style("font-size", "16px");
 
         svg.selectAll(".bar")
             .data(Object.entries(chart_data))
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return x(d[0]); })
+            .attr("x", function(d) { return x(d[0]) + 100; })
             .attr("width", x.bandwidth())
             .attr("y", function(d) { return y(d[1]); })
-            .attr("height", function(d) { return 300 - y(d[1]); })
+            .attr("height", function(d) { return 600 - y(d[1]); })
             .attr("fill", chartColor)
             .attr("stroke", "black")
-            .attr("stroke-width", 1);
+            .attr("stroke-width", 1.5);
 
         svg.append("g")
-            .attr("transform", "translate(0," + 300 + ")")
+            .attr("transform", "translate(100," + 600 + ")")
             .call(d3.axisBottom(x));
 
         } else {

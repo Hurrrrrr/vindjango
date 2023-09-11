@@ -68,8 +68,7 @@ class MainPageFormView(FormView):
         TARGET_ALC = 14.5
         TARGET_VALUE = 225
         MIN_ALC = 10    # the highest value which will bottom out the chart
-        
-        #TODO Fix this
+
         chart_alcohol = (abv - MIN_ALC) * (TARGET_VALUE / (TARGET_ALC - MIN_ALC))
 
         return chart_alcohol
