@@ -12,19 +12,7 @@
 
     <body data-chart-data="{{ chart_data|escapejs|safe }}" data-color-data="{{ color_data|safe }}">
         <h1>Tasting Note</h1>
-        {% comment %} <div id="swatch" style="background-color:
-            rgb({{color_data.appearance_red}}, 
-            {{color_data.appearance_green}},
-            {{color_data.appearance_blue}});"></div> {% endcomment %}
         <div id="chart" class="d-flex justify-content-center"></div>
-        {% comment %} <div id="chart-labels">
-            <p>Sweetness</p>
-            <p>Acidity</p>
-            <p>Body</p>
-            <p>Alcohol</p>
-            <p>Tannin/Bitterness</p>
-            <p>Finish</p>
-        </div> {% endcomment %}
         <p>{{ tasting_note }}</p>
 
         <h1>Your Guess</h1>

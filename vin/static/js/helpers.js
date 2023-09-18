@@ -17,6 +17,7 @@ window.drawChart = function() {
 
         let chartDataString = JSON.parse('"' + chart_data + '"');
         chart_data = JSON.parse(chartDataString);
+        console.log(chart_data)
 
         let svg = d3.select("#chart")
             .append("svg")
@@ -72,6 +73,8 @@ window.drawChart = function() {
             .attr("transform", "translate(100," + 600 + ")")
             .call(d3.axisBottom(x));
         
+        // this removes the default created by the above code
+        // allowing only the custom labels to appear 
         xAxisGroup.selectAll("text").remove();
 
     } else {

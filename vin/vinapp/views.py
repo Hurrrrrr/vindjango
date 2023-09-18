@@ -73,6 +73,23 @@ class MainPageFormView(FormView):
 
         return chart_alcohol
     
+    # wine.sweetness is the residual sugar of the wine in grams/litre
+    # this doesn't work well for dry wines, since the vast majority are
+    # <= 5g/l, which when scaled to the chart (which displays 0-255)
+    # is too difficult to read, so this converts that into a subjective
+    # (and therefore somewhat arbitrary) value for display
+    # TODO: finish this. perhaps fix the overlap problem
+    def scale_sweetness(self, wine_obj):
+        sugar = wine_obj.sweetness
+        output = 0
+        if sugar < 3:
+            return output * 10
+        elif sugar < 5:
+            return output * 8 
+        elif sugar < 20:
+            return output * 4
+
+    
     def prepare_color_data(self, wine_obj):
 
         color_data = {
