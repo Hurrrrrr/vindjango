@@ -21,7 +21,7 @@ window.drawChart = function() {
         let svg = d3.select("#chart")
             .append("svg")
             .attr("width", 1200)
-            .attr("height", 600);
+            .attr("height", 630);
 
         const x = d3.scaleBand()
             .domain(Object.keys(chart_data))
@@ -55,15 +55,29 @@ window.drawChart = function() {
             .attr("fill", chartColor)
             .attr("stroke", "black")
             .attr("stroke-width", 1.5);
+        
+        const xLabels = ["Sweetness", "Acidity", "Body", "Alcohol", "Tannin/Bitterness", "Finish"];
+    
+        svg.selectAll(".label")
+            .data(xLabels)
+            .enter().append("text")
+            .attr("class", "label")
+            .attr("x", function(d, i) { return x(Object.keys(chart_data)[i]) + 100 + x.bandwidth()/ 2; })
+            .attr("y", 620)
+            .attr("text-anchor", "middle")
+            .text(function(d) { return d; })
+            .style("font-size", "16px");
 
-        svg.append("g")
+        let xAxisGroup = svg.append("g")
             .attr("transform", "translate(100," + 600 + ")")
             .call(d3.axisBottom(x));
+        
+        xAxisGroup.selectAll("text").remove();
 
-        } else {
-            console.log("chart_data does not exist");
-        }
+    } else {
+        console.log("chart_data does not exist");
     }
+}
 
 window.autocomplete = function() {
     $(document).ready(function(){
