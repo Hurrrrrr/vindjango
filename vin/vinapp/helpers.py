@@ -56,18 +56,9 @@ class TastingNote:
             f"{self.get_label_color()} wine.\n"
             f"The nose is of {self.get_nose_intensity()} "
             f"intensity and it is {self.get_development()}.\n"
-            f"The wine is {self.get_sweetness()}, "
-            f"Acidity is {self.get_acidity()}, "
-            f"Alcohol is {self.get_alcohol()}, "
-            f"Body is {self.get_body()}, "
         )
-        if self.label_color == "Red":
-            output.append(f"Tannin is {self.get_tannin_or_bitterness()}, ")
-        elif self.check_for_bitterness():
-            output.append(f"Bitterness is {self.get_tannin_or_bitterness()}, ")
         
         output.append(
-            f"and the finish is {self.get_finish()}.\n"
             f"The wine shows {self.get_fruit_ripeness()} "
             f"{self.get_fruit_color()} {self.get_fruit_family()} fruit"
         )
