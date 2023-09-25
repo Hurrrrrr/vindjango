@@ -11,24 +11,34 @@ class UserAnswersForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        def get_unique_values(field_name):
+            all_values = Wine.objects.values_list(field_name, flat=True)
+            unique_values = set()
+            for value in all_values:
+                if value:
+                    split_values = [v.strip() for v in value.split(',')]
+                    unique_values.update(split_values)
+            return list(unique_values)
+
         self.fields['grape'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(list(Wine.objects.values_list('grapes', flat=True).distinct())),
+            'data-choices': json.dumps(get_unique_values('grapes')),
             'placeholder': "Grape: (ie. Chardonnay)"
             })
         self.fields['country'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(list(Wine.objects.values_list('country', flat=True).distinct())),
+            'data-choices': json.dumps(get_unique_values('country')),
             'placeholder': "Country: (ie. France)"
             })
         self.fields['region'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(list(Wine.objects.values_list('region', flat=True).distinct())),
+            'data-choices': json.dumps(get_unique_values('region')),
             'placeholder': "Region: (ie. Burgundy)"
             })
         self.fields['appellation'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(list(Wine.objects.values_list('appellation', flat=True).distinct())),
+            'data-choices': json.dumps(get_unique_values('appellation')),
             'placeholder': "Appellation (ie. Macon)"
             })
         self.fields['vintage'].widget.attrs.update({
