@@ -63,7 +63,6 @@ class Wine(models.Model):
     def get_clarity(self):
         return self.clarity
     
-    # finish appearance once this program has a graphical display
     def get_appearance(self):
         return f"{self.appearance_red},{self.appearance_green},{self.appearance_blue}"
 
@@ -167,7 +166,6 @@ class UserAnswers(models.Model):
     vintage = models.IntegerField()
 
 class UserResults(models.Model):
-
     grape = models.BooleanField()
     country = models.BooleanField()
     region = models.BooleanField()
