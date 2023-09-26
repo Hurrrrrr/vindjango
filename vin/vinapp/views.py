@@ -1,13 +1,16 @@
 from .models import UserAnswers, Wine
 from .helpers import TastingNote, ResultsLogic, UserResults
 from .forms import UserAnswersForm, MainPageForm
+from django.conf import settings
 from django.core.serializers import serialize
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import random, json
 
 class MainPageFormView(FormView):
@@ -191,6 +194,25 @@ class ResultsView(TemplateView):
         if 'results_string' in self.request.session:
             del self.request.session['results_string']
         return context
+
+class ContactFormView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'contact.html')
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        send_mail(
+            subject,
+            f'Message from {name} <{email}>:\n\n{message}',
+            settings.DEFAULT_FROM_EMAIL,
+            ['jonahpalmer@gmail.com'],
+        )
+
+        return HttpResponse('Thank you for your message.')
     
 def submit_answer(request):
     if request.method == 'POST':
