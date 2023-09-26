@@ -838,7 +838,7 @@ class ResultsLogic:
         formatted_output.append(f"The primary grape is {self.wine.get_primary_grape()} {self.grape_emoji}")
         if self.grape_secondary_result:
                 formatted_output.append(f" , but you identified a secondary grape")
-        formatted_output.append("\n")
+        formatted_output.append("<br>")
         
         formatted_output.append(f"The country is {self.wine.get_primary_country()} {self.country_emoji}")
         if self.world_result:
@@ -848,20 +848,20 @@ class ResultsLogic:
             else:
                 formatted_output.append(f"new")
             formatted_output.append(f" world")
-        formatted_output.append("\n")
+        formatted_output.append("<br>")
         
         formatted_output.append(f"The region is {self.wine.get_primary_region()} {self.region_emoji}")
-        formatted_output.append("\n")
+        formatted_output.append("<br>")
 
         formatted_output.append(f"The appellation is {self.wine.get_primary_appellation()} {self.appellation_emoji}")
-        formatted_output.append("\n")
+        formatted_output.append("<br>")
 
         formatted_output.append(f"The vintage is {self.wine.vintage} {self.vintage_emoji}")
         if self.vintage_offset > 0:
             formatted_output.append(f", you were off by {self.vintage_offset}")
-        formatted_output.append("\n")
+        formatted_output.append("<br>")
     
-        formatted_output.append(f"Your score: {self.total_score} / 100 {self.total_emoji}\n")
+        formatted_output.append(f"Your score: {self.total_score} / 100 {self.total_emoji}<br>")
     
         return "".join(formatted_output)
     
