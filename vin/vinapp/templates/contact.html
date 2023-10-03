@@ -5,7 +5,10 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <h2>Contact Me</h2>
+                <h2>Contact</h2>
+                <p class="lead mb-4">
+                    Personal inquiries, business inquiries, feedback, and bug reports welcome
+                </p>
                 <form id="contactForm" method="post" action="{% url 'vinapp:contact' %}">
                     {% csrf_token %}
                     <div class="form-group">
