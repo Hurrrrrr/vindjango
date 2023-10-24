@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 class="display-4 mb-4">About Vindicate</h1>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <p class="lead mb-4">
+                        NB: This version of Vindicate is deprecated. When I began working on it, generative AI had not reached the level of notoriety and availability that we see today. This algorithmic implementation of Vindicate remains here while an LLM-based implementation is being developed.
+                    </p>
+                    <p class="lead mb-4">
+                        Vindicate helps you improve your wine knowledge in a fun, gamified way by trying to identify an unknown wine based on a tasting note. Customize the experience in two ways: by selecting the scope and by selecting the accuracy.
+                    </p>
+                    <p class="lead mb-4">
+                        With a narrow scope, only the world’s most well-known and recognizable wine styles will appear. With a wide scope, anything goes: obscure regions, old bottles, and cutting-edge styles can all show up.
+                    </p>
+                    <p class="lead mb-4">
+                        To make the experience more challenging, less repetitive, and to simulate the real-world experience of being an imperfect taster, choose a lower accuracy and Vindicate will procedurally generate tasting notes that are more likely to contain errors and those errors are more likely to be bigger.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="mb-3">Upcoming Features</h3>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">Wine of the day: compete against your friends to show off your skills</li>
+                <li class="list-group-item">More styles of wine: rose, orange, sparkling, fortified, and dessert</li>
+                <li class="list-group-item">Accounts with progress tracking</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
