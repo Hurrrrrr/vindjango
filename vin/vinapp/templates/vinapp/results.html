@@ -1,24 +1,12 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
-</head>
-<body>
-    <h1>Results</h1>
-    <p>{{ results }}</p>
-    <a href="{% url 'vinapp:start-over' %}">Start Over</a>
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <h1>Your Results</h1>
+    <p>{{ results|safe }}</p>
+    <a href="{% url 'vinapp:start-over' %}" class="btn btn-primary">Start Over</a>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <!-- Custom JavaScript code here -->
-    <!-- <script>
-        $(document).ready(function(){
-            /* Your JavaScript code here */
-        });
-    </script> -->
-</body>
-</html>
+{% endblock %}
