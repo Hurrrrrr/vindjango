@@ -14,7 +14,6 @@ urlpatterns = [
     path('results/', ResultsView.as_view(), name='results'),
     path('start-over/', start_over, name='start-over'),
     path('info/', TemplateView.as_view(template_name='info.html'), name='info'),
-    path('how-to-play/', TemplateView.as_view(template_name='how_to_play.html'), name='how_to_play'),
     path('contact/', ContactFormView.as_view(), name='contact'),
     path('bio/', TemplateView.as_view(template_name='bio.html'), name='bio'),
 ]

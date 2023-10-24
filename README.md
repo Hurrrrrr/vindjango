@@ -1,5 +1,10 @@
 # vindjango
 
+NB: This version of Vindicate is deprecated. When I began working on it,
+generative AI had not reached the level of notoriety and availability
+that we see today. This algorithmic implementation of Vindicate remains
+here while an LLM-based implementation is being developed. 
+
 Vindjango is the pre-launch name of Vindicate, an app that lets users improve
 their wine knowledge by trying to identify an unknown wine based on a tasting
 note. Users can select a narrow scope, with only the most well-known styles
