@@ -56,18 +56,9 @@ class TastingNote:
             f"{self.get_label_color()} wine.\n"
             f"The nose is of {self.get_nose_intensity()} "
             f"intensity and it is {self.get_development()}.\n"
-            f"The wine is {self.get_sweetness()}, "
-            f"Acidity is {self.get_acidity()}, "
-            f"Alcohol is {self.get_alcohol()}, "
-            f"Body is {self.get_body()}, "
         )
-        if self.label_color == "Red":
-            output.append(f"Tannin is {self.get_tannin_or_bitterness()}, ")
-        elif self.check_for_bitterness():
-            output.append(f"Bitterness is {self.get_tannin_or_bitterness()}, ")
         
         output.append(
-            f"and the finish is {self.get_finish()}.\n"
             f"The wine shows {self.get_fruit_ripeness()} "
             f"{self.get_fruit_color()} {self.get_fruit_family()} fruit"
         )
@@ -737,6 +728,13 @@ class ResultsLogic:
         self.appellation_score = 0
         self.vintage_score = 0
         self.total_score = 0
+        
+        self.grape_emoji = ""
+        self.country_emoji = ""
+        self.region_emoji = ""
+        self.appellation_emoji = ""
+        self.vintage_emoji = ""
+        self.total_emoji = ""
     
 
 
@@ -837,44 +835,33 @@ class ResultsLogic:
     def get_formatted_results(self):
         formatted_output = []
 
-        formatted_output.append(f"The primary grape is {self.wine.get_primary_grape()}, you are ")
-        if not self.grape_result:
-            formatted_output.append(f"in")
-        formatted_output.append(f"correct")
+        formatted_output.append(f"The primary grape is {self.wine.get_primary_grape()} {self.grape_emoji}")
         if self.grape_secondary_result:
-            formatted_output.append(f", but you identified a secondary grape")
-        formatted_output.append(f".\n")
+                formatted_output.append(f" , but you identified a secondary grape")
+        formatted_output.append("<br>")
         
-        formatted_output.append(f"The country is {self.wine.get_primary_country()}, you are ")
-        if not self.country_result:
-            formatted_output.append(f"in")
-        formatted_output.append(f"correct")
+        formatted_output.append(f"The country is {self.wine.get_primary_country()} {self.country_emoji}")
         if self.world_result:
             formatted_output.append(f", but you correctly identified the wine as ")
             if self.is_old_world:
                 formatted_output.append(f"old")
+            else:
+                formatted_output.append(f"new")
             formatted_output.append(f" world")
-        formatted_output.append(f".\n")
+        formatted_output.append("<br>")
         
-        formatted_output.append(f"The region is {self.wine.get_primary_region()}, you are ")
-        if not self.region_result:
-            formatted_output.append(f"in")
-        formatted_output.append(f"correct.\n")
+        formatted_output.append(f"The region is {self.wine.get_primary_region()} {self.region_emoji}")
+        formatted_output.append("<br>")
 
-        formatted_output.append(f"The appellation is {self.wine.get_primary_appellation()}, you are ")
-        if not self.appellation_result:
-            formatted_output.append(f"in")
-        formatted_output.append(f"correct.\n")
+        formatted_output.append(f"The appellation is {self.wine.get_primary_appellation()} {self.appellation_emoji}")
+        formatted_output.append("<br>")
 
-        formatted_output.append(f"The vintage is {self.wine.vintage}, you are ")
-        if not self.vintage_result:
-            formatted_output.append(f"in")
-        formatted_output.append(f"correct")
+        formatted_output.append(f"The vintage is {self.wine.vintage} {self.vintage_emoji}")
         if self.vintage_offset > 0:
             formatted_output.append(f", you were off by {self.vintage_offset}")
-        formatted_output.append(f".\n")
+        formatted_output.append("<br>")
     
-        formatted_output.append(f"Your score: {self.total_score} / 100\n")
+        formatted_output.append(f"Your score: {self.total_score} / 100 {self.total_emoji}<br>")
     
         return "".join(formatted_output)
     
@@ -883,33 +870,53 @@ class ResultsLogic:
             self.score_grape() + self.score_country() + self.score_region() +
             self.score_appellation() + self.score_vintage()
         )
+
+        if self.total_score >= 85:
+            self.total_emoji = "🥇"
+        elif self.total_score >= 70:
+            self.total_emoji = "🥈"
+        elif self.total_score >= 50:
+            self.total_emoji = "🥉"
+        else:
+            self.total_emoji = "💩"
     
+
     def score_grape(self):
         if self.grape_result:
+            self.grape_emoji = "✅"
             return 35
         elif self.grape_secondary_result:
+            self.grape_emoji = "🟨"
             return 15
         else:
+            self.grape_emoji = "❌"
             return 0
     
     def score_country(self):
         if self.country_result:
+            self.country_emoji = "✅"
             return 25
         elif self.world_result:
+            self.country_emoji = "🟨"
             return 10
         else:
+            self.country_emoji = "❌"
             return 0
     
     def score_region(self):
         if self.region_result:
+            self.region_emoji = "✅"
             return 20
         else:
+            self.region_emoji = "❌"
             return 0
     
     def score_appellation(self):
         if self.appellation_result:
+            self.appellation_emoji = "✅"
             return 10
         else:
+            self.appellation_emoji = "❌"
             return 0
     
     def score_vintage(self):
@@ -917,10 +924,13 @@ class ResultsLogic:
         vintage = self.wine.vintage
         self.vintage_offset = abs(response - vintage)
         if response == vintage:
+            self.vintage_emoji = "✅"
             return 10
         elif response == vintage + 1 or response == vintage - 1:
+            self.vintage_emoji = "🟨"
             return 5
         else:
+            self.vintage_emoji = "❌"
             return 0
     
     def create_results_list(self):

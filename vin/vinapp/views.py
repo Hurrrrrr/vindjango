@@ -1,17 +1,20 @@
 from .models import UserAnswers, Wine
 from .helpers import TastingNote, ResultsLogic, UserResults
 from .forms import UserAnswersForm, MainPageForm
+from django.conf import settings
 from django.core.serializers import serialize
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import random, json
 
 class MainPageFormView(FormView):
-    template_name = 'vinapp/main_page_form.html'
+    template_name = 'main_page_form.html'
     form_class = MainPageForm
     success_url = reverse_lazy('vinapp:tasting-note-display')
 
@@ -51,13 +54,44 @@ class MainPageFormView(FormView):
         chart_data = {
             'sweetness': wine_obj.sweetness,
             'acidity': wine_obj.acidity,
-            'alcohol': wine_obj.alcohol,
             'body': wine_obj.body,
+            'alcohol': self.scale_alcohol(wine_obj),
             'tannin_or_bitterness': wine_obj.tannin_or_bitterness,
             'finish': wine_obj.finish
         }
 
         return chart_data
+    
+    # convert wine.alcohol (which is abv * 10) into value to be used in chart:
+    # 14.5 = high, 13.5 = med+, 12.5 = med, 11.5 = med-, 10.5 = low, 10 = min
+    def scale_alcohol(self, wine_obj):
+        abv = wine_obj.alcohol / 10
+        if abv < 10: return 0
+
+        TARGET_ALC = 14.5
+        TARGET_VALUE = 225
+        MIN_ALC = 10    # the highest value which will bottom out the chart
+
+        chart_alcohol = (abv - MIN_ALC) * (TARGET_VALUE / (TARGET_ALC - MIN_ALC))
+
+        return chart_alcohol
+    
+    # wine.sweetness is the residual sugar of the wine in grams/litre
+    # this doesn't work well for dry wines, since the vast majority are
+    # <= 5g/l, which when scaled to the chart (which displays 0-255)
+    # is too difficult to read, so this converts that into a subjective
+    # (and therefore somewhat arbitrary) value for display
+    # TODO: finish this. perhaps fix the overlap problem
+    def scale_sweetness(self, wine_obj):
+        sugar = wine_obj.sweetness
+        output = 0
+        if sugar < 3:
+            return output * 10
+        elif sugar < 5:
+            return output * 8 
+        elif sugar < 20:
+            return output * 4
+
     
     def prepare_color_data(self, wine_obj):
 
@@ -71,7 +105,7 @@ class MainPageFormView(FormView):
         return color_data
 
 class TastingNoteDisplayView(FormView):
-    template_name = 'vinapp/tasting_note_display.html'
+    template_name = 'tasting_note_display.html'
     form_class = UserAnswersForm
     success_url = reverse_lazy('vinapp:results')
 
@@ -152,7 +186,7 @@ class TastingNoteDisplayView(FormView):
         user_results.save()
 
 class ResultsView(TemplateView):
-    template_name = 'vinapp/results.html'
+    template_name = 'results.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -160,6 +194,25 @@ class ResultsView(TemplateView):
         if 'results_string' in self.request.session:
             del self.request.session['results_string']
         return context
+
+class ContactFormView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'contact.html')
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        send_mail(
+            subject,
+            f'Message from {name} <{email}>:\n\n{message}',
+            settings.DEFAULT_FROM_EMAIL,
+            ['jonahpalmer@gmail.com'],
+        )
+
+        return HttpResponse('Thank you for your message.')
     
 def submit_answer(request):
     if request.method == 'POST':
@@ -175,3 +228,6 @@ def submit_answer(request):
 def start_over(request):
     request.session.flush()
     return redirect('vinapp:main-page-form')
+
+def index(request):
+    return render(request, 'index.html')

@@ -1,32 +1,9 @@
 from django import forms
 from django.forms import TextInput
-from .models import UserAnswers
+from .models import UserAnswers, Wine
 import json
 
 class UserAnswersForm(forms.ModelForm):
-
-    # replace these with dynamically generated lists
-    GRAPE_CHOICES = ("Chardonnay", "Chenin Blanc", "Gewurtraminer",
-    "Pinot Gris/Grigio", "Riesling", "Sauvignon Blanc", "Cabernet Sauvignon",
-    "Merlot,", "Pinot Noir", "Syrah/Shiraz", "Grenache-based blend",
-    "Cabernet Sauvignon-based blend", "Merlot-based blend", "Nebbiolo",
-    "Corvina-based blend", "Sangiovese", "Tempranillo", "Malbec",
-    "Gamay", "Cabernet Franc", "Viognier", "Mourverde")
-
-    COUNTRY_CHOICES = ("France", "Italy", "USA", "Germany",
-    "Spain", "Argentina", "Australia", "New Zealand")
-
-    REGION_CHOICES = ("Burgundy", "California", "Loire", "Alsace", "Mosel",
-    "South Island", "Bordeaux", "Northern Rhone", "Southern Rhone", "Piedmont",
-    "Veneto", "Tuscany", "La Rioja", "Cuyo", "South Australia")
-
-    APPELLATION_CHOICES = ("Chablis 1er Cru", "Chassagne-Montratcher 1er Cru",
-    "Napa Valley", "Vouvray", "Alsace Grand Cru", "Pinot Grigio Delle Venezie",
-    "Mosel", "Sancerre", "Marlborough", "St-Julien", "Saint-Emilion",
-    "Bourgogne 1er Cru", "Cote-Rotie", "Chateauneuf-Du-Pape", "Barolo",
-    "Amarone Della Valpolicella", "Brunello Di Montalcino Riserva",
-    "Rioja Gran Reserva", "Russian River Valley", "Mendoza", "Barossa Valley",
-    "Central Otago", "Bourgogne", "Chianti Classico Riserva")
 
     class Meta:
         model = UserAnswers
@@ -34,24 +11,34 @@ class UserAnswersForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        def get_unique_values(field_name):
+            all_values = Wine.objects.values_list(field_name, flat=True)
+            unique_values = set()
+            for value in all_values:
+                if value:
+                    split_values = [v.strip() for v in value.split(',')]
+                    unique_values.update(split_values)
+            return list(unique_values)
+
         self.fields['grape'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(self.GRAPE_CHOICES),
+            'data-choices': json.dumps(get_unique_values('grapes')),
             'placeholder': "Grape: (ie. Chardonnay)"
             })
         self.fields['country'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(self.COUNTRY_CHOICES),
+            'data-choices': json.dumps(get_unique_values('country')),
             'placeholder': "Country: (ie. France)"
             })
         self.fields['region'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(self.REGION_CHOICES),
+            'data-choices': json.dumps(get_unique_values('region')),
             'placeholder': "Region: (ie. Burgundy)"
             })
         self.fields['appellation'].widget.attrs.update({
             'class': 'autocomplete',
-            'data-choices': json.dumps(self.APPELLATION_CHOICES),
+            'data-choices': json.dumps(get_unique_values('appellation')),
             'placeholder': "Appellation (ie. Macon)"
             })
         self.fields['vintage'].widget.attrs.update({
